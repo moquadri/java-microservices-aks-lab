@@ -23,6 +23,32 @@ spec:
             configMapKeyRef:
               name: config-server
               key: CONFIG_SERVER_URL
+        - name: "APPLICATIONINSIGHTS_CONNECTION_STRING"
+          valueFrom:
+            configMapKeyRef:
+              name: config-server
+              key: APPLICATIONINSIGHTS_CONNECTION_STRING
+        - name: "APPLICATIONINSIGHTS_CONFIGURATION_CONTENT"
+          value: >-
+            {
+                "role": {   
+                    "name": "customers-service"
+                  }
+            } 
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: unsecret
+              key: username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: pwsecret
+              key: password    
+                volumeMounts:
+        - name: secrets-store01-inline
+          mountPath: "/mnt/secrets-store"
+          readOnly: true           
         imagePullPolicy: Always
         livenessProbe:
           failureThreshold: 3
