@@ -14,6 +14,13 @@ spec:
       labels:
         app: customers-service
     spec:
+      volumes:
+      - name: secrets-store01-inline
+        csi: 
+          driver: secrets-store.csi.k8s.io
+          readOnly: true
+          volumeAttributes: 
+            secretProviderClass: "azure-kvname-user-msi"
       containers:
       - image: acrpetclinic5cf732.azurecr.io/spring-petclinic-customers-service:2.7.6
         name: customers-service
@@ -45,7 +52,7 @@ spec:
             secretKeyRef:
               name: pwsecret
               key: password    
-                volumeMounts:
+        volumeMounts:
         - name: secrets-store01-inline
           mountPath: "/mnt/secrets-store"
           readOnly: true           
